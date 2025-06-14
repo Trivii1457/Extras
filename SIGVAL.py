@@ -28,7 +28,11 @@ def main():
     
     def reg_student(student_code, student_name):
         """Add a new student as (code, name) tuple."""
+        if any(s[0] == student_code for s in students):
+            print("Error: Ya existe un estudiante con ese código.")
+            return False
         students.add((student_code, student_name))
+        return True
 
     def remove_student(student_code):
         """Remove a student and all their enrollments."""
@@ -41,7 +45,11 @@ def main():
     # CRUD for courses
     def add_course(course_id, course_name, group):
         """Add a new course as (id, name, group) tuple."""
+        if any(c[0] == course_id and c[2] == group for c in courses):
+            print("Error: Ya existe un curso con ese ID y grupo.")
+            return False
         courses.add((course_id, course_name, group))
+        return True
 
     def remove_course(course_id, group):
         """Remove a course and all related schedules, professors, and enrollments."""
@@ -75,7 +83,11 @@ def main():
     
     def add_professor(professor_id, professor_name):
         """Add a new professor as (id, name) tuple."""
+        if any(p[0] == professor_id for p in professors):
+            print("Error: Ya existe un profesor con ese ID.")
+            return False
         professors.add((professor_id, professor_name))
+        return True
 
     def remove_professor(professor_id):
         """Remove a professor and all their course assignments."""
@@ -221,19 +233,19 @@ def main():
         if option == "1":
             code = input("Student code: ")
             name = input("Student name: ")
-            reg_student(code, name)
-            print("Student registered.")
+            if reg_student(code, name):
+                print("Student registered.")
         elif option == "2":
             pid = input("Professor ID: ")
             pname = input("Professor name: ")
-            add_professor(pid, pname)
-            print("Professor registered.")
+            if add_professor(pid, pname):
+                print("Professor registered.")
         elif option == "3":
             cid = input("Course ID: ")
             cname = input("Course name: ")
             group = input("Group: ")
-            add_course(cid, cname, group)
-            print("Course registered.")
+            if add_course(cid, cname, group):
+                print("Course registered.")
         elif option == "4":
             cid = input("Course ID: ")
             group = input("Group: ")
